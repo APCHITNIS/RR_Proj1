@@ -5,9 +5,9 @@ data$date = as.Date(as.character(data$date), "%Y-%m-%d")
 #data transformation to prepare histogram removing missing values
 df = data
 stepsPerDay <- with(df, tapply(steps, date, sum, na.rm = T));
+
 df <- data.frame(date = names(stepsPerDay), total = stepsPerDay)
-
-
+df$date = as.Date(as.character(df$date), "%Y-%m-%d")
 df$total = as.numeric(df$total)
 
 
@@ -36,12 +36,12 @@ for (i in 1:nrow(dataImputed)){
                 dataImputed[i, "steps"] = dfMnStpsPerInt$mean[which(dfMnStpsPerInt$interval == dataImputed[i, "interval"])]; 
         } 
 }
-#Histo
+sum(is.na(dataImputed$steps))
+#Histogram
 stepsPerDay <- with(dataImputed, tapply(steps, date, sum, na.rm = T));
 dfImputed <- data.frame(date = names(stepsPerDay), total = stepsPerDay)
 dfImputed$date = as.Date(as.character(dfImputed$date), "%Y-%m-%d")
 dfImputed$total = as.numeric(dfImputed$total)
-
 
 #Histogram of the total number of steps taken each day
 plot(x = dfImputed$date, dfImputed$total, type="h", main="Histogram of Daily Steps", xlab="Date", ylab="Steps per Day", col="blue", lwd=5)
